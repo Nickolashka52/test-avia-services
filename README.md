@@ -11,12 +11,10 @@
 
 ## Запуск локально
 
-```bash
+bash
 npm install
 npm run dev
 
 ## Demo
 
 https://test-avia-services-dep.vercel.app/
-
-```
