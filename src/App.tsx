@@ -1,35 +1,32 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import { ServiceList } from "./components/ServiceList";
+import { SelectedServices } from "./components/SelectedServices";
+import type { Service, SelectedServicesType } from "./types";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [selectedServices, setSelectedServices] =
+    useState<SelectedServicesType>([]);
+
+  const handleAddService = (service: Service) => {
+    setSelectedServices((prev: SelectedServicesType) => {
+      if (prev.some((s) => s.id === service.id)) return prev;
+      return [...prev, service];
+    });
+  };
+
+  const totalPrice = selectedServices.reduce(
+    (sum: number, s: Service) => sum + s.price,
+    0
+  );
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="app-container">
+      <main className="main-content">
+        <ServiceList onAddService={handleAddService} />
+      </main>
+      <SelectedServices selected={selectedServices} total={totalPrice} />
+    </div>
+  );
 }
 
-export default App
+export default App;
